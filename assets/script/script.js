@@ -1,35 +1,53 @@
-//Habilitar popover
-const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
-//alert
-const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-const appendAlert = (message, type) => {
-  const wrapper = document.createElement('div')
-  wrapper.innerHTML = [
-    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-    `   <div>${message}</div>`,
-    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-    '</div>'
-  ].join('')
+//ALERTAAAA
+let botonColor = document.getElementById('liveAlertBtn');
+let inputColor = document.getElementById('intAlert');
+let alerta = document.getElementById('textoAlerta');
 
-  alertPlaceholder.append(wrapper)
-}
+botonColor.addEventListener('click', () => {
+    let color = inputColor.value;
+    alerta.style.backgroundColor = color;
+    alerta.innerText = `Este es tu color seleccionado: ${color}`;
+});
 
-const alertTrigger = document.getElementById('liveAlertBtn')
-if (alertTrigger) {
-  alertTrigger.addEventListener('click', () => {
-    appendAlert('Bonito color')
-  })
-}
+// POPOVER
+// Inicializa el popover con contenido vacío (luego lo cambiaremos dinámicamente)
+  let popoverInput = document.getElementById("intPopover");
+  let popoverButton = document.querySelector('[data-bs-toggle="popover"]');
+ 
+  let popover = new bootstrap.Popover(popoverButton, {
+  content: () => popoverInput.value, trigger: 'focus'
+});
 
-//toast
-const toastTrigger = document.getElementById('liveToastBtn')
-const toastLiveExample = document.getElementById('liveToast')
+// TOAST
+let botonToast = document.getElementById('liveToastBtn');
+let inputToast = document.getElementById('intToast');
+let toastOriginal = document.getElementById('liveToast');
+let containerToast = document.querySelector('.toast-container');
 
-if (toastTrigger) {
-  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-  toastTrigger.addEventListener('click', () => {
-    toastBootstrap.show()
-  })
-}
+botonToast.addEventListener('click', () => {
+    let cantidad = parseInt(inputToast.value);
+
+    for (let i = 0; i < cantidad; i++) {
+        let nuevoToast = toastOriginal;
+        nuevoToast.querySelector('.toast-body').innerText = `Hola, soy el toast numero ${i + 1}`;
+        containerToast.appendChild(nuevoToast);
+        let instanciaToast = new bootstrap.Toast(nuevoToast);
+        instanciaToast.show();
+    }
+    if(inputToast.value < 0){
+      alert('No escojas numeros negativos 😒')
+    }
+});
+
+// CARRUSEL
+let inputCarrusel = document.getElementById('intCarrusel');
+let botonCarrusel = document.getElementById('cambiarTitulo');
+
+botonCarrusel.addEventListener('click', () => {
+    let nuevoTitulo = inputCarrusel.value;
+    let activo = document.querySelector('.carousel-item.active .carousel-caption h5');
+    if (activo) {
+        activo.textContent = nuevoTitulo;
+    }
+});
